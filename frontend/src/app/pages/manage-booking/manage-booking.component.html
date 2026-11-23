@@ -1,0 +1,55 @@
+<div class="wrapper">
+  <h1>Manage your booking</h1>
+  <p class="muted">Enter your booking reference and the email address you booked with.</p>
+
+  <form class="card" (ngSubmit)="findBooking()">
+    <div class="form-row">
+      <div>
+        <label for="reference">Booking reference</label>
+        <input id="reference" name="reference" placeholder="e.g. HB7K2M9QXR" [(ngModel)]="reference" />
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" [(ngModel)]="email" />
+      </div>
+      <div>
+        <button type="submit" [disabled]="loading">{{ loading ? 'Searching…' : 'Find booking' }}</button>
+      </div>
+    </div>
+  </form>
+
+  @if (error) {
+    <div class="alert error">{{ error }}</div>
+  }
+  @if (message) {
+    <div class="alert success">{{ message }}</div>
+  }
+
+  @if (booking; as b) {
+    <div class="card result">
+      <div class="header">
+        <h2>{{ b.hotelName }}</h2>
+        <span class="badge" [class.ok]="b.status === 'CONFIRMED'" [class.full]="b.status === 'CANCELLED'">
+          {{ b.status }}
+        </span>
+      </div>
+      <p class="muted">{{ b.hotelLocation }} · {{ b.roomName }}</p>
+
+      <div class="summary-line"><span>Reference</span><strong>{{ b.bookingReference }}</strong></div>
+      <div class="summary-line"><span>Guest</span><span>{{ b.guestName }}</span></div>
+      <div class="summary-line"><span>Check-in</span><span>{{ b.checkIn | date: 'EEE, d MMM y' }}</span></div>
+      <div class="summary-line"><span>Check-out</span><span>{{ b.checkOut | date: 'EEE, d MMM y' }}</span></div>
+      <div class="summary-line"><span>Nights</span><span>{{ b.nights }}</span></div>
+      <div class="summary-line total"><span>Total</span><span>{{ b.totalAmount | currency: 'INR' : 'symbol' : '1.0-0' }}</span></div>
+      @if (b.cancelledAt) {
+        <div class="summary-line muted"><span>Cancelled on</span><span>{{ b.cancelledAt | date: 'd MMM y, h:mm a' }}</span></div>
+      }
+
+      @if (canCancel) {
+        <button type="button" class="danger" (click)="cancelBooking()" [disabled]="cancelling">
+          {{ cancelling ? 'Cancelling…' : 'Cancel booking' }}
+        </button>
+      }
+    </div>
+  }
+</div>

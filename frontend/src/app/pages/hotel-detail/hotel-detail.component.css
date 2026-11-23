@@ -1,0 +1,91 @@
+.back-link {
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 800px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.banner {
+  background: linear-gradient(135deg, #2f63b8, #6a9be0);
+  color: #fff;
+  border-radius: 6px;
+  padding: 44px 12px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.room-title {
+  margin-top: 16px;
+}
+
+.room {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.room-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.small {
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.booking-panel {
+  position: sticky;
+  top: 16px;
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.summary {
+  background: #f8f9fc;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+
+.guest-form > div {
+  margin-bottom: 10px;
+}
+
+.suggest-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.alt {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 8px;
+}

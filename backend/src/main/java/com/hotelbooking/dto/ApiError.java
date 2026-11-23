@@ -1,0 +1,14 @@
+package com.hotelbooking.dto;
+
+import java.time.Instant;
+import java.util.Map;
+
+/** The single error format returned by every endpoint. */
+public record ApiError(
+        Instant timestamp,
+        int status,
+        String error,
+        String message,
+        String path,
+        Map<String, String> fieldErrors) {
+}

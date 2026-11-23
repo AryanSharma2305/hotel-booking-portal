@@ -1,0 +1,89 @@
+<section class="hero">
+  <h1>Find your next stay</h1>
+  <p class="muted">Search by city and pick your dates to see live room availability and the total price.</p>
+</section>
+
+<form class="card search-box" (ngSubmit)="search()">
+  <div class="form-row">
+    <div>
+      <label for="location">Location</label>
+      <input id="location" name="location" list="location-list" placeholder="Any city"
+             [(ngModel)]="location" autocomplete="off" />
+      <datalist id="location-list">
+        @for (city of locations; track city) {
+          <option [value]="city"></option>
+        }
+      </datalist>
+    </div>
+    <div>
+      <label for="checkIn">Check-in</label>
+      <input id="checkIn" name="checkIn" type="date" [min]="today"
+             [(ngModel)]="checkIn" (ngModelChange)="onCheckInChange()" />
+    </div>
+    <div>
+      <label for="checkOut">Check-out</label>
+      <input id="checkOut" name="checkOut" type="date" [min]="checkIn || today" [(ngModel)]="checkOut" />
+    </div>
+    <div class="actions">
+      <button type="submit">Search</button>
+      <button type="button" class="secondary" (click)="clear()">Clear</button>
+    </div>
+  </div>
+</form>
+
+@if (error) {
+  <div class="alert error">{{ error }}</div>
+}
+
+@if (loading) {
+  <p class="muted">Loading hotels…</p>
+} @else if (!error) {
+  <p class="muted result-count">
+    {{ hotels.length }} {{ hotels.length === 1 ? 'hotel' : 'hotels' }} found
+    @if (!hasDates) { · add dates to see availability }
+  </p>
+
+  @if (hotels.length === 0) {
+    <div class="card muted">No hotels match this location. Try another city or clear the search.</div>
+  }
+
+  <div class="grid">
+    @for (hotel of hotels; track hotel.id) {
+      <article class="card hotel-card">
+        <div class="banner">{{ hotel.location }}</div>
+        <h2>{{ hotel.name }}</h2>
+        <p class="muted description">{{ hotel.description }}</p>
+        <div>
+          @for (amenity of hotel.amenities; track amenity) {
+            <span class="chip">{{ amenity }}</span>
+          }
+        </div>
+
+        <div class="price-row">
+          <div>
+            <strong>{{ hotel.pricePerNight | currency: 'INR' : 'symbol' : '1.0-0' }}</strong>
+            <span class="muted"> / night</span>
+            @if (hotel.totalAmount !== null) {
+              <div class="muted small">
+                {{ hotel.nights }} {{ hotel.nights === 1 ? 'night' : 'nights' }}:
+                {{ hotel.totalAmount | currency: 'INR' : 'symbol' : '1.0-0' }} total
+              </div>
+            }
+          </div>
+          @if (hotel.availableRooms !== null) {
+            @if (hotel.availableRooms > 0) {
+              <span class="badge ok">{{ hotel.availableRooms }} {{ hotel.availableRooms === 1 ? 'room' : 'rooms' }} left</span>
+            } @else {
+              <span class="badge full">Sold out</span>
+            }
+          }
+        </div>
+
+        <a class="button" [routerLink]="['/hotels', hotel.id]"
+           [queryParams]="hasDates ? { checkIn: checkIn, checkOut: checkOut } : {}">
+          View details
+        </a>
+      </article>
+    }
+  </div>
+}

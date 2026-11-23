@@ -1,0 +1,38 @@
+@if (booking; as b) {
+  <div class="card confirmation">
+    <div class="tick">✓</div>
+    <h1>Booking confirmed</h1>
+    <p class="muted">Thank you, {{ b.guestName }}. Your room at {{ b.hotelName }} is reserved.</p>
+
+    <div class="reference">
+      <span class="muted">Booking reference</span>
+      <strong>{{ b.bookingReference }}</strong>
+      <button type="button" class="secondary" (click)="copyReference()">{{ copied ? 'Copied' : 'Copy' }}</button>
+    </div>
+    <p class="muted small">Keep this reference. You need it with your email to view or cancel the booking.</p>
+
+    <div class="details">
+      <div class="summary-line"><span>Hotel</span><span>{{ b.hotelName }}, {{ b.hotelLocation }}</span></div>
+      <div class="summary-line"><span>Room</span><span>{{ b.roomName }}</span></div>
+      <div class="summary-line"><span>Check-in</span><span>{{ b.checkIn | date: 'EEE, d MMM y' }}</span></div>
+      <div class="summary-line"><span>Check-out</span><span>{{ b.checkOut | date: 'EEE, d MMM y' }}</span></div>
+      <div class="summary-line">
+        <span>{{ b.pricePerNight | currency: 'INR' : 'symbol' : '1.0-0' }} × {{ b.nights }}
+          {{ b.nights === 1 ? 'night' : 'nights' }}</span>
+        <span>{{ b.totalAmount | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
+      </div>
+      <div class="summary-line total"><span>Total</span><span>{{ b.totalAmount | currency: 'INR' : 'symbol' : '1.0-0' }}</span></div>
+      <div class="summary-line"><span>Email</span><span>{{ b.guestEmail }}</span></div>
+    </div>
+
+    <div class="links">
+      <a class="button" routerLink="/manage" [queryParams]="{ reference: b.bookingReference }">Manage or cancel</a>
+      <a routerLink="/">Book another stay</a>
+    </div>
+  </div>
+} @else {
+  <div class="card">
+    <h2>Nothing to show here</h2>
+    <p class="muted">To see an existing booking, use <a routerLink="/manage">Manage booking</a>.</p>
+  </div>
+}

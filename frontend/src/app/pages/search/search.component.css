@@ -1,0 +1,60 @@
+.hero {
+  margin-bottom: 16px;
+}
+
+.search-box {
+  margin-bottom: 16px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.result-count {
+  margin: 8px 0 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.hotel-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.banner {
+  background: linear-gradient(135deg, #2f63b8, #6a9be0);
+  color: #fff;
+  border-radius: 6px;
+  padding: 26px 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.description {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.small {
+  font-size: 0.85rem;
+}
+
+.hotel-card .button {
+  text-align: center;
+}

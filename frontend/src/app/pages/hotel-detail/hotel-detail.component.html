@@ -1,0 +1,116 @@
+<a routerLink="/" class="back-link">← Back to all hotels</a>
+
+@if (pageError) {
+  <div class="alert error">{{ pageError }}</div>
+}
+
+@if (hotel; as h) {
+  <div class="layout">
+    <section class="card">
+      <div class="banner">{{ h.location }}</div>
+      <h1>{{ h.name }}</h1>
+      <p class="muted">{{ h.address }}</p>
+      <p>{{ h.description }}</p>
+
+      <h3>Amenities</h3>
+      <div>
+        @for (amenity of h.amenities; track amenity) {
+          <span class="chip">{{ amenity }}</span>
+        }
+      </div>
+
+      <h3 class="room-title">Room</h3>
+      <div class="room">
+        <div>
+          <strong>{{ h.room.name }}</strong>
+          <div class="muted small">Up to {{ h.room.maxGuests }} guests · {{ h.room.totalRooms }} {{ h.room.totalRooms === 1 ? 'room' : 'rooms' }} in this hotel</div>
+        </div>
+        <div class="room-price">
+          {{ h.room.pricePerNight | currency: 'INR' : 'symbol' : '1.0-0' }}
+          <span class="muted small">/ night</span>
+        </div>
+      </div>
+    </section>
+
+    <aside class="card booking-panel">
+      <h2>Book a room</h2>
+
+      <div class="dates">
+        <div>
+          <label for="checkIn">Check-in</label>
+          <input id="checkIn" type="date" [min]="today" [(ngModel)]="checkIn" (ngModelChange)="onCheckInChange()" />
+        </div>
+        <div>
+          <label for="checkOut">Check-out</label>
+          <input id="checkOut" type="date" [min]="checkIn || today" [(ngModel)]="checkOut"
+                 (ngModelChange)="onDatesChanged()" />
+        </div>
+      </div>
+      <button type="button" class="full-width" (click)="checkAvailability()" [disabled]="checking">
+        {{ checking ? 'Checking…' : 'Check availability' }}
+      </button>
+
+      @if (availabilityError) {
+        <div class="alert error">{{ availabilityError }}</div>
+      }
+
+      @if (availability; as a) {
+        @if (a.availableRooms > 0) {
+          <div class="alert success">
+            {{ a.availableRooms }} {{ a.availableRooms === 1 ? 'room is' : 'rooms are' }} available for your dates.
+          </div>
+
+          <div class="summary">
+            <div class="summary-line">
+              <span>{{ a.checkIn | date: 'd MMM' }} → {{ a.checkOut | date: 'd MMM y' }}</span>
+            </div>
+            <div class="summary-line">
+              <span>{{ a.pricePerNight | currency: 'INR' : 'symbol' : '1.0-0' }} × {{ a.nights }}
+                {{ a.nights === 1 ? 'night' : 'nights' }}</span>
+              <span>{{ a.totalAmount | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
+            </div>
+            <div class="summary-line total">
+              <span>Total to pay</span>
+              <span>{{ a.totalAmount | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
+            </div>
+          </div>
+
+          <form (ngSubmit)="confirmBooking()" class="guest-form">
+            <div>
+              <label for="guestName">Full name</label>
+              <input id="guestName" name="guestName" [(ngModel)]="guestName" [class.invalid]="errors['guestName']" />
+              @if (errors['guestName']) { <div class="field-error">{{ errors['guestName'] }}</div> }
+            </div>
+            <div>
+              <label for="guestEmail">Email</label>
+              <input id="guestEmail" name="guestEmail" type="email" [(ngModel)]="guestEmail"
+                     [class.invalid]="errors['guestEmail']" />
+              @if (errors['guestEmail']) { <div class="field-error">{{ errors['guestEmail'] }}</div> }
+            </div>
+            <button type="submit" class="full-width" [disabled]="booking">
+              {{ booking ? 'Booking…' : 'Confirm booking' }}
+            </button>
+          </form>
+        } @else {
+          <div class="alert error">Sorry, this hotel is fully booked for these dates.</div>
+
+          @if (a.alternativeStays.length > 0) {
+            <p class="suggest-title">Rooms are free on these nearby dates:</p>
+            @for (stay of a.alternativeStays; track stay.checkIn) {
+              <button type="button" class="secondary alt" (click)="useAlternative(stay)">
+                {{ stay.checkIn | date: 'EEE d MMM' }} → {{ stay.checkOut | date: 'EEE d MMM' }}
+                <span>{{ stay.totalAmount | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
+              </button>
+            }
+          } @else {
+            <p class="muted">No free rooms within a week of these dates either. Please try another hotel.</p>
+          }
+        }
+      }
+
+      @if (bookingError) {
+        <div class="alert error">{{ bookingError }}</div>
+      }
+    </aside>
+  </div>
+}
