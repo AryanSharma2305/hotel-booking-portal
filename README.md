@@ -54,7 +54,7 @@ Maven does not need to be installed: the backend includes the Maven Wrapper (`mv
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/<your-username>/hotel-booking-portal.git
+git clone https://github.com/AryanSharma2305/hotel-booking-portal.git
 cd hotel-booking-portal
 ```
 
