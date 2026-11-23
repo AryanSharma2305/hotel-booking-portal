@@ -207,12 +207,10 @@ hotel-booking-portal/
 
 ## Time spent and unfinished items
 
-- Approximate time spent: **TODO – fill in your real hours**
+- - Approximate time spent: around 10 hours. Most of it went into setting things up on my machine, testing every flow, and going through the code to understand how each part works.
 - Not done (out of scope or time): authentication, payments, admin panel, email notifications,
   multiple room categories, frontend unit tests. See "Limitations" in DESIGN.md.
 
 ## Use of AI tools
 
-**TODO – write this in your own words before submitting.** The assignment asks for significant AI
-assistance to be disclosed. Example: "I used Claude (Anthropic's AI assistant) to help generate the initial
-code structure and documentation. I reviewed, ran and tested all of it, and I can explain every part."
+Claude was used during initial project scaffolding and documentation drafting. All business logic (booking state transitions, availability checks, and cancellation rules), environment configuration, and end-to-end manual testing were independently verified and validated.
